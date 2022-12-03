@@ -1,0 +1,7 @@
+* Befria yourself from browser tyranny
+
+Befria is a very simple anti procrastenation plugin.
+
+It is a stripped down version of the more ecclectic "emslaved"
+project.
+

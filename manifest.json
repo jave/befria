@@ -1,0 +1,59 @@
+{
+
+    "description": "Emslave Firefox",
+    "manifest_version": 2,
+    "name": "Emslave-firefox",
+    "version": "1.0",
+    "icons": {
+        "48": "icons/border-48.png"
+    },
+    "permissions": [
+	"downloads",
+	//"menus",
+	"storage",
+        // "<all_urls>",
+	"tabs",
+        "activeTab",
+	"webNavigation"        
+        
+    ],
+
+    "content_security_policy": "script-src 'self' 'unsafe-eval'; object-src 'self';",
+    
+    // "applications": {
+    //     "gecko": {
+    //         "id": "emslaved-ff@verona.se",
+    //         "strict_min_version": "50.0"
+    //     }
+    // },
+
+
+    "optional_permissions": [
+	"<all_urls>"
+    ],
+    "content_scripts": [
+        {
+            "matches": ["*://*/*"],
+            "js": [
+                "browser-polyfill.js",
+                "emslave.js"]
+        }
+    ],
+    "background": {
+	"scripts": [
+            "browser-polyfill.js",
+            "background.js"]
+    },
+    
+    "browser_action": {
+        "default_icon": "icons/border-48.png",
+        "default_title": "Emslave the Fox"
+        ,
+        "default_popup": "popup.html"        
+    },
+
+    "options_ui": {
+        "page": "options.html"        
+    }
+
+}
