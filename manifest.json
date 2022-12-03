@@ -31,14 +31,6 @@
     "optional_permissions": [
 	"<all_urls>"
     ],
-    "content_scripts": [
-        {
-            "matches": ["*://*/*"],
-            "js": [
-                "browser-polyfill.js",
-                "emslave.js"]
-        }
-    ],
     "background": {
 	"scripts": [
             "browser-polyfill.js",
