@@ -1,8 +1,8 @@
 {
 
-    "description": "Emslave Firefox",
+    "description": "Befria yourself from browser tyranny",
     "manifest_version": 2,
-    "name": "Emslave-firefox",
+    "name": "Befria",
     "version": "1.0",
     "icons": {
         "48": "icons/border-48.png"
@@ -39,7 +39,7 @@
     
     "browser_action": {
         "default_icon": "icons/border-48.png",
-        "default_title": "Emslave the Fox"
+        "default_title": "Befria"
         ,
         "default_popup": "popup.html"        
     },
