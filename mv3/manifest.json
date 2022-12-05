@@ -9,25 +9,26 @@
     },
     "permissions": [
 	"downloads",
-	//"menus",
 	"storage",
-        // "<all_urls>",
 	"tabs",
         "activeTab",
 	"webNavigation"        
         
     ],
 
-    "content_security_policy": "script-src 'self' ; object-src 'self';",
+    "content_security_policy": {
+        "script-src" :  "self" ,
+        "object-src" : "self"
+    },
 
-    "optional_permissions": [
-	"<all_urls>"
-    ],
+  "optional_host_permissions": [
+    "*://*/*"  ],
     "background": {
-	"service_worker":             "background.js"
+	"service_worker":             "background.js",
+           "type": "module"
     },
     
-    "browser_action": {
+    "action": {
         "default_icon": "icons/border-48.png",
         "default_title": "Befria"
         ,

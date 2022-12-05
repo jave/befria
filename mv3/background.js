@@ -1,3 +1,4 @@
+import "./browser-polyfill.js";
 
 // to see the extensions log messages, load the extension, inspect it in the debug panel
 console.log("JAVE loading background");
@@ -5,18 +6,22 @@ console.log("JAVE loading background");
 var blocked=false;
 var timerId=0;
 
+console.log("hello")
+
 function forceBlock() {
     console.log("JAVE timer block ");
     blocked=true;
 
-    browser.browserAction.setIcon({path: "icons/bookmark-it.png"});
+    //browser.browserAction.setIcon({path: "icons/bookmark-it.png"});
+    chrome.action.setIcon({path: "icons/bookmark-it.png"});
 }
 
 let unblockCounter=0; //should be in local storage i guess
 function forceUnblock() {
     console.log("JAVE  unblock ");
     blocked=false;
-    browser.browserAction.setIcon({path: "icons/border-48.png"});    
+    //browser.browserAction.setIcon.then({path: "icons/border-48.png"});
+    chrome.action.setIcon({path: "icons/border-48.png"});    
     timerId=setTimeout(forceBlock, 1000*60*10); //block automatically after 10 minutes. i suppose there should be only 1 timer
     //check timerid, if set, cancel timer, then start the new one
     unblockCounter=unblockCounter+1;
@@ -135,10 +140,6 @@ browser.runtime.onMessage.addListener(handleMessage);
 
 function onOpened() {
   console.log(`Options page opened`);
-}
-
-function onError(error) {
-  console.log(`Error: ${error}`);
 }
 
 
