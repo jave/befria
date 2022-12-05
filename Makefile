@@ -9,6 +9,8 @@ clean:
 	rm -f mv3/icons/faengslad.png
 
 images:
+	mkdir -p mv2/icons/
+	mkdir -p mv3/icons/
 	inkscape befriad.svg   -o mv2/icons/befriad.png
 	inkscape faengslad.svg -o mv2/icons/faengslad.png
 	inkscape befriad.svg   -o mv3/icons/befriad.png
