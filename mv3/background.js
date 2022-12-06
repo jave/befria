@@ -4,26 +4,36 @@ import "./browser-polyfill.js";
 console.log("JAVE loading background");
 
 var blocked=false;
-var timerId=0;
+//var timerId=0;
 
 console.log("hello")
+
 
 function forceBlock() {
     console.log("JAVE timer block ");
     blocked=true;
 
-    //browser.browserAction.setIcon({path: "icons/bookmark-it.png"});
+    //browser.browserAction.setIcon({path: "icons/befriad.png"});
     chrome.action.setIcon({path: "icons/befriad.png"});
 }
+
+// use alarm instead of timer, because mv3
+chrome.alarms.onAlarm.addListener(() => {
+    forceBlock;
+});
+
 
 let unblockCounter=0; //should be in local storage i guess
 function forceUnblock() {
     console.log("JAVE  unblock ");
     blocked=false;
-    //browser.browserAction.setIcon.then({path: "icons/border-48.png"});
+    //browser.browserAction.setIcon.then({path: "icons/faengslad.png"});
     chrome.action.setIcon({path: "icons/faengslad.png"});    
-    timerId=setTimeout(forceBlock, 1000*60*10); //block automatically after 10 minutes. i suppose there should be only 1 timer
+    //    timerId=setTimeout(forceBlock, 1000*60*10); //block automatically after 10 minutes. i suppose there should be only 1 timer
     //check timerid, if set, cancel timer, then start the new one
+    console.log("JAVE setting up timer to forceBlock ");
+    chrome.alarms.create({ delayInMinutes: 10 }); //alarm api rather than timer
+    
     unblockCounter=unblockCounter+1;
 }
 

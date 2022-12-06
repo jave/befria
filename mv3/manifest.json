@@ -8,11 +8,11 @@
         "48": "icons/befriad.png"
     },
     "permissions": [
-	"downloads",
 	"storage",
 	"tabs",
         "activeTab",
-	"webNavigation"        
+	"webNavigation",
+        "alarms"
         
     ],
 
