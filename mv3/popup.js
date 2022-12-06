@@ -1,5 +1,10 @@
 console.log("JAVE popup ");
 
+browser.storage.onChanged.addListener(changeData => {
+    console.log("storage onchanged popup");
+    document.getElementById('blockedCounter').innerHTML =  changeData.unblockCounter.newValue;
+});
+
 
 // send a msg to the bg script
 function handleResponse(message) {
@@ -28,7 +33,9 @@ document.addEventListener("click", (e) => {
     //     notifyBackgroundPage(e);
     // }
 
-    
+
+
     e.preventDefault();
 });
+
 

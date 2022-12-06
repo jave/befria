@@ -3,83 +3,57 @@ import "./browser-polyfill.js";
 // to see the extensions log messages, load the extension, inspect it in the debug panel
 console.log("JAVE loading background");
 
-var blocked=false;
-//var timerId=0;
-
 console.log("hello")
+
+//general notes:
+// - this was converted from mv2 and polyfill, to be both ff and chrome, but that didnt turn out so well so far, so in the mv3 theres some chrome stuff
+// - having to manage state in storage.local, with promises, is super inconvenient, as compared to the mv2 model
 
 
 function forceBlock() {
     console.log("JAVE timer block ");
-    blocked=true;
-
-    //browser.browserAction.setIcon({path: "icons/befriad.png"});
+    browser.storage.local.set({blocked: true});
     chrome.action.setIcon({path: "icons/befriad.png"});
 }
 
-// use alarm instead of timer, because mv3
 chrome.alarms.onAlarm.addListener(() => {
     forceBlock;
 });
 
 
-let unblockCounter=0; //should be in local storage i guess
-function forceUnblock() {
+async function forceUnblock() {
     console.log("JAVE  unblock ");
-    blocked=false;
-    //browser.browserAction.setIcon.then({path: "icons/faengslad.png"});
+    browser.storage.local.set({blocked: false});
     chrome.action.setIcon({path: "icons/faengslad.png"});    
-    //    timerId=setTimeout(forceBlock, 1000*60*10); //block automatically after 10 minutes. i suppose there should be only 1 timer
-    //check timerid, if set, cancel timer, then start the new one
     console.log("JAVE setting up timer to forceBlock ");
     chrome.alarms.create({ delayInMinutes: 10 }); //alarm api rather than timer
     
-    unblockCounter=unblockCounter+1;
+    let unblockCounter=(await chrome.storage.local.get())["unblockCounter"] +1;
+    browser.storage.local.set({unblockCounter: unblockCounter});
 }
 
 
 
 //////////////////////////////////////////////////////////////////////////////////////////////
-// blockedPattern management
-let blockedPattern="dn.se|svd.se|nytimes|manga|penny|smbc|warhammer|tube|dailykos|blacklibrary";
-// when extension is installed, initialize the blocked pattern
+// when extension is installed, initialize the blocked pattern, and others
 browser.runtime.onInstalled.addListener(details => {
-  browser.storage.local.set({
-    blockedPattern: blockedPattern
-  });
+    browser.storage.local.set({
+        //example of distractive urls i want to block
+        blockedPattern: "dn.se|svd.se|nytimes|manga|penny|smbc|warhammer|tube|dailykos|blacklibrary",
+        blocked: true,
+        unblockCounter: 0
+    });
 });
 
-
-//initially i had this, but it didnt seem to work with the polyfill
-// // Get the stored blockedPattern
-// browser.storage.local.get(data => {
-//     if (data.blockedPattern) {
-//         blockedPattern= data.blockedPattern;
-//   }
-// });
-
-//but this worked with the polyfill
-function updateBlockedPattern(data){
-    if (data.blockedPattern) {
-        blockedPattern= data.blockedPattern;
-    }
-}
-browser.storage.local.get().then(updateBlockedPattern, onError);
-
-
-
-// Listen for changes in the blocked pattern
-browser.storage.onChanged.addListener(changeData => {
-  blockedPattern = changeData.blockedPattern.newValue;
-});
-// end blockedPattern management
 //////////////////////////////////////////////////////////////////////////////////////////////
 
 
-function handleBeforeNavigate(navDetails) {
+// this is the function that actually does anything, it blocks access to urls that match blockedPattern
+async function handleBeforeNavigate(navDetails) {
+    let blocked=(await chrome.storage.local.get())["blocked"]
     console.log("JAVE handleBeforeNavigate "+blocked + " " + navDetails.url);
     if (!blocked) return;
-    //example of distractive urls i want to block
+    let blockedPattern=(await chrome.storage.local.get())["blockedPattern"]
     var re = RegExp (blockedPattern);
     if (navDetails.frameId == 0) {
         if(re.test(navDetails.url)){
@@ -89,7 +63,7 @@ function handleBeforeNavigate(navDetails) {
     }
 }
 
-
+//and this is just registering the listener for navigation events
 browser.webNavigation.onBeforeNavigate.addListener(handleBeforeNavigate);
 
 
@@ -110,14 +84,6 @@ function onError(error) {
 
 function onUpdated(tab) {
     console.log(`Updated tab: ${tab.id}`);
-}
-
-function updateFirstTab(tabs) {
-    var updating = browser.tabs.update(tabs[0].id, {
-        active: true
-        //    url: "https://developer.mozilla.org"
-    });
-    updating.then(onUpdated, onError);
 }
 
 
