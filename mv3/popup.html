@@ -4,15 +4,18 @@
   <head>
     <meta charset="utf-8">
     <script type="application/javascript" src="browser-polyfill.js"></script>
-    <script src="popup.js"></script>
+
   </head>
 
-  <body>
+  <body style="width: 300px">
     <div id="popup-content">
-      <button id="block">Block</button>    </br>
-      <button id="unblock">Unblock</button>
-      <button id="prefs">Prefs</button>
-      <p id="blockedCounter">untouched</p>
+      <img id="popupicon" src="icons/befriad.png"/></br>
+      <button id="block">Free yourself</button>    </br>
+      <button id="unblock">Chain yourself</button></br>
+      <button id="prefs">Prefs</button></br>
+      Number of times you chained yourself:
+      <div id="blockedCounter">untouched</div>
     </div>
   </body>
+    <script src="popup.js"></script>  
 </html>
