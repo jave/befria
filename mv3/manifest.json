@@ -1,7 +1,6 @@
 {
 
-    "description": "Befria yourself from browser tyranny.
-It is a simple anti-procrastenation plugin, with the source code freely available.",
+    "description": "Befria yourself from browser tyranny. It is a simple anti-procrastenation plugin, with the source code freely available.",
     "manifest_version": 3,
     "name": "Befria",
     "version": "1.0",

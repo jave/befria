@@ -50,7 +50,7 @@ browser.runtime.onInstalled.addListener(details => {
 
 // this is the function that actually does anything, it blocks access to urls that match blockedPattern
 async function handleBeforeNavigate(navDetails) {
-    let blocked=(await chrome.storage.local.get())["blocked"]
+    let blocked=(await chrome.storage.local.get())["blocked"];
     console.log("JAVE handleBeforeNavigate "+blocked + " " + navDetails.url);
     if (!blocked) return;
     let blockedPattern=(await chrome.storage.local.get())["blockedPattern"]
